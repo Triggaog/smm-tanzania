@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String   @default("Administrator")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Service {
+  id                  String        @id @default(cuid())
+  name                String
+  slug                String        @unique
+  categoryLabel       String
+  heroHeading         String
+  heroDescription     String        @db.Text
+  heroImage           String?
+  primaryButtonText   String
+  primaryButtonLink   String
+  secondaryButtonText String?
+  secondaryButtonLink String?
+  trustPoints         Json
+  overviewHeading     String
+  overviewContent     String        @db.Text
+  targetAudience      Json
+  includedFeatures    Json
+  priceAmount         String?
+  priceMode           String        @default("STARTING_FROM")
+  priceCurrency       String        @default("TZS")
+  priceVisible        Boolean       @default(true)
+  priceNote           String?       @db.Text
+  externalCostsIncluded Boolean?
+  processSteps        Json
+  benefits            Json
+  faqs                Json
+  relatedServiceIds   Json
+  finalCtaHeading     String
+  finalCtaDescription String        @db.Text
+  seoTitle            String
+  seoDescription      String        @db.Text
+  openGraphImage      String?
+  status              ContentStatus @default(DRAFT)
+  active              Boolean       @default(true)
+  displayOrder        Int           @default(0)
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+}
+
+model PageContent {
+  id             String        @id @default(cuid())
+  key            String        @unique
+  title          String
+  data           Json
+  seoTitle       String
+  seoDescription String        @db.Text
+  openGraphImage String?
+  status         ContentStatus @default(DRAFT)
+  displayOrder   Int           @default(0)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model ContentItem {
+  id             String        @id @default(cuid())
+  type           String
+  slug           String?
+  title          String
+  summary        String?       @db.Text
+  data           Json
+  image          String?
+  seoTitle       String?
+  seoDescription String?       @db.Text
+  status         ContentStatus @default(DRAFT)
+  displayOrder   Int           @default(0)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([type, status, displayOrder])
+  @@unique([type, slug])
+}
+
+model SiteSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     Json
+  updatedAt DateTime @updatedAt
+}

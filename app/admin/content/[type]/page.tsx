@@ -1,0 +1,1 @@
+import {CollectionEditor} from "@/components/admin/collection-editor";export default async function Page({params}:{params:Promise<{type:string}>}){const{type}=await params;return <><h1>Manage {type}</h1><CollectionEditor type={type}/></>}

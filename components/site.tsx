@@ -1,0 +1,3 @@
+import Link from "next/link";
+export function PageTop({label,heading,copy}:{label:string;heading:string;copy:string}){return <section className="page-top"><div className="wrap"><span className="kicker">{label}</span><h1>{heading}</h1><p>{copy}</p></div></section>}
+export function Cta({heading,description,buttonText="Book a Consultation",buttonLink="/booking"}:{heading:string;description?:string;buttonText?:string;buttonLink?:string}){return <section className="cta"><div className="wrap"><h2>{heading}</h2>{description&&<p>{description}</p>}<Link className="button light" href={buttonLink}>{buttonText} →</Link></div></section>}
