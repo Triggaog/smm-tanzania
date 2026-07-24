@@ -2,7 +2,7 @@
 import {useState} from "react";
 
 type ServiceOption={slug:string;name:string;priceAmount:string|null;priceMode:string;priceCurrency:string;priceVisible:boolean};
-const displayPrice=(s:ServiceOption|undefined)=>!s||!s.priceVisible||!s.priceAmount?"Price discussed during consultation":`${s.priceMode==="STARTING_FROM"?"Starting from ":""}${s.priceCurrency} ${s.priceAmount.replace(/\B(?=(\d{3})+(?!\d))/g,",")}`;
+const displayPrice=(s:ServiceOption|undefined)=>!s||!s.priceVisible||!s.priceAmount?"Price discussed during consultation":`${s.priceMode==="STARTING_FROM"?"Starting from ":""}${s.priceCurrency} ${new Intl.NumberFormat("en-US").format(Number(s.priceAmount))}`;
 
 export function BookingForm({services,initialService}:{services:ServiceOption[];initialService:string}){
   const first=services.find(s=>s.slug===initialService)||services[0];

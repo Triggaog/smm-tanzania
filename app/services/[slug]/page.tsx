@@ -1,15 +1,15 @@
-import {db} from "@/lib/prisma";
+import {getPublishedService} from "@/lib/public-queries";
 import {notFound} from "next/navigation";
 import Link from "next/link";
 import type {Metadata} from "next";
 
 export const dynamic="force-dynamic";
 type IncludedItem={title:string;visible?:boolean};
-export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{const{slug}=await params;const s=await db.service.findUnique({where:{slug}});return s?{title:s.seoTitle,description:s.seoDescription}:{}}
-const formatPrice=(currency:string,amount:string)=>`${currency} ${amount.replace(/\B(?=(\d{3})+(?!\d))/g,",")}`;
+export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{const{slug}=await params;const s=await getPublishedService(slug);return s?{title:s.seoTitle,description:s.seoDescription}:{}}
+const formatPrice=(currency:string,amount:string)=>`${currency} ${new Intl.NumberFormat("en-US").format(Number(amount))}`;
 
 export default async function Page({params}:{params:Promise<{slug:string}>}){
-  const{slug}=await params;const s=await db.service.findUnique({where:{slug}});if(!s||!s.active||s.status!=="PUBLISHED")notFound();
+  const{slug}=await params;const s=await getPublishedService(slug);if(!s)notFound();
   const included=(s.includedFeatures as unknown[]).map(x=>typeof x==="string"?{title:x,visible:true}:x as IncludedItem).filter(x=>x.visible!==false);
   const price=s.priceAmount?formatPrice(s.priceCurrency,s.priceAmount):"";
   return <main className="minimal-service">

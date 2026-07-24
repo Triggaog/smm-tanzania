@@ -2,14 +2,15 @@ import type {Metadata} from "next";
 import Link from "next/link";
 import {db} from "@/lib/prisma";
 import "./globals.css";
+import "./performance.css";
 
 export const dynamic = "force-dynamic";
 export const metadata:Metadata = {title:"SMM Tanzania", description:"Social media support for Tanzania"};
 
 export default async function Layout({children}:{children:React.ReactNode}) {
   const [services, setting] = await Promise.all([
-    db.service.findMany({where:{status:"PUBLISHED",active:true},orderBy:{displayOrder:"asc"}}),
-    db.contentItem.findFirst({where:{type:"setting",status:"PUBLISHED"}}),
+    db.service.findMany({where:{status:"PUBLISHED",active:true},orderBy:{displayOrder:"asc"},select:{id:true,name:true,slug:true}}),
+    db.contentItem.findFirst({where:{type:"setting",status:"PUBLISHED"},select:{data:true}}),
   ]);
   const s = (setting?.data || {}) as any;
   const links = [["/","Home"],["/blog","Blog"],["/about","About Us"],["/contact","Contact"]];

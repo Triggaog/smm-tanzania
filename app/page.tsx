@@ -1,14 +1,15 @@
 import Link from "next/link";
+import {OptimizedImage} from "@/components/optimized-image";
 import {db} from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
   const [home, services, posts, testimonials] = await Promise.all([
-    db.contentItem.findFirst({where: {type: "homepage", status: "PUBLISHED"}}),
-    db.service.findMany({where: {status: "PUBLISHED", active: true}, orderBy: {displayOrder: "asc"}, take: 4}),
-    db.contentItem.findMany({where: {type: "post", status: "PUBLISHED"}, orderBy: {displayOrder: "asc"}, take: 4}),
-    db.contentItem.findMany({where: {type: "testimonial", status: "PUBLISHED"}, orderBy: {displayOrder: "asc"}}),
+    db.contentItem.findFirst({where: {type: "homepage", status: "PUBLISHED"},select:{data:true}}),
+    db.service.findMany({where: {status: "PUBLISHED", active: true}, orderBy: {displayOrder: "asc"}, take: 4,select:{id:true,slug:true,name:true,heroDescription:true}}),
+    db.contentItem.findMany({where: {type: "post", status: "PUBLISHED"}, orderBy: {displayOrder: "asc"}, take: 4,select:{id:true,slug:true,title:true,summary:true,data:true}}),
+    db.contentItem.findMany({where: {type: "testimonial", status: "PUBLISHED"}, orderBy: {displayOrder: "asc"},select:{id:true,title:true,summary:true,data:true}}),
   ]);
   const d = (home?.data || {}) as any;
 
@@ -24,7 +25,7 @@ export default async function Page() {
           </div>
         </div>
         <div className="hero-art" aria-label="Social media campaign performance illustration">
-          {d.hero?.image ? <img src={d.hero.image} alt="SMM Tanzania"/> : <>
+          {d.hero?.image ? <OptimizedImage className="hero-image" src={d.hero.image} alt="SMM Tanzania" width={620} height={525} sizes="(max-width: 900px) calc(100vw - 48px), 570px" priority/> : <>
             <div className="hero-orbit orbit-one"/><div className="hero-orbit orbit-two"/>
             <div className="phone">
               <div className="phone-head"><b>SMM</b><span>•••</span></div>

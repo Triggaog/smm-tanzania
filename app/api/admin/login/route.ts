@@ -12,8 +12,7 @@ export async function POST(req:Request){
   const secure=(process.env.NEXT_PUBLIC_SITE_URL||'').startsWith('https://');
   res.cookies.set(sessionCookie,await signSession(admin.id,admin.email),{httpOnly:true,sameSite:'lax',secure,path:'/',maxAge:60*60*8});
   return res;
- }catch(error){
-  console.error('Admin login failed',error);
+ }catch{
   return NextResponse.json({error:'Unable to sign in'},{status:500});
  }
 }
