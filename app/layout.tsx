@@ -1,6 +1,7 @@
 import type {Metadata} from "next";
 import Link from "next/link";
 import {db} from "@/lib/prisma";
+import {Navbar} from "@/components/navbar";
 import "./globals.css";
 import "./performance.css";
 
@@ -15,12 +16,7 @@ export default async function Layout({children}:{children:React.ReactNode}) {
   const s = (setting?.data || {}) as any;
   const links = [["/","Home"],["/blog","Blog"],["/about","About Us"],["/contact","Contact"]];
   return <html lang="en"><body>
-    <header><div className="wrap nav">
-      <Link className="logo" href="/" aria-label="SMM Tanzania home"><b>SMM</b><span>TANZANIA</span></Link>
-      <nav><Link href="/">Home</Link><details className="desktop-services"><summary>Services <i>⌄</i></summary><div className="desktop-services-menu">{services.map(x=><Link key={x.id} href={`/services/${x.slug}`}>{x.name}</Link>)}<Link className="all" href="/services">View all Services ↗</Link></div></details>{links.slice(1,3).map(x=><Link key={x[0]} href={x[0]}>{x[1]}</Link>)}</nav>
-      <Link className="button nav-cta" href="/booking">Booking <span>↗</span></Link>
-      <details className="mobile-menu"><summary aria-label="Open menu"><i/><i/><i/></summary><div><Link href="/">Home</Link><Link href="/services">Services</Link><Link href="/blog">Blog</Link><Link href="/about">About Us</Link><Link href="/contact">Contact</Link><Link className="button" href="/booking">Booking ↗</Link></div></details>
-    </div></header>
+    <Navbar services={services}/>
     <main>{children}</main>
     <footer className="site-footer"><div className="wrap footer-grid">
       <div className="footer-brand"><Link className="logo inverse" href="/"><b>SMM</b><span>TANZANIA</span></Link><p>{s.footerDescription}</p><div className="socials"><a href={s.instagram} aria-label="Instagram">ig</a><a href={s.facebook} aria-label="Facebook">f</a><a href={s.linkedin} aria-label="LinkedIn">in</a></div></div>
