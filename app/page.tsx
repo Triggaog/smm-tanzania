@@ -1,4 +1,5 @@
 import type {Metadata} from "next";
+import {TypedComingSoon} from "@/components/typed-coming-soon";
 import "./coming-soon.css";
 
 export const metadata:Metadata={
@@ -16,7 +17,7 @@ export default function Page(){
 
     <div className="coming-content">
       <span className="coming-label">SMM TANZANIA</span>
-      <h1>Coming Soon</h1>
+      <TypedComingSoon/>
       <h2>We&apos;re building something exceptional.</h2>
       <p>
         Our new website is on its way.<br/>
