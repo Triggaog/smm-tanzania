@@ -29,20 +29,3 @@ const paths:Record<string,React.ReactNode> = {
 export function FeatureIcon({name,className=""}:{name:string;className?:string}) {
   return <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name] || paths.check}</svg>;
 }
-
-const serviceIcons:Record<string,string>={
-  "social-media-management":"calendar",
-  "social-media-growth":"chart",
-  "meta-ads-management":"target",
-  "content-strategy":"camera",
-  "account-recovery":"shield",
-  "social-media-monetization":"wallet",
-  "verification-support":"check",
-  "music-distribution":"music",
-  "website-development":"code",
-  "training-consultation":"book",
-};
-
-export function ServiceIcon({slug}:{slug:string}){
-  return <FeatureIcon name={serviceIcons[slug]||"strategy"} className="service-icon"/>;
-}
