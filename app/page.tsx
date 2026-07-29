@@ -1,13 +1,24 @@
 import type {Metadata} from "next";
 import {TypedComingSoon} from "@/components/typed-coming-soon";
+import {Homepage} from "@/components/homepage";
+import SiteLayout from "@/app/(site)/layout";
 import "./coming-soon.css";
 
-export const metadata:Metadata={
-  title:"Coming Soon | SMM Tanzania",
-  description:"We're building something exceptional.",
-};
+export function generateMetadata():Metadata{
+  if(process.env.NODE_ENV==="development"){
+    return {
+      title:"SMM Tanzania",
+      description:"Social media support for Tanzania",
+    };
+  }
 
-export default function Page(){
+  return {
+    title:"Coming Soon | SMM Tanzania",
+    description:"We're building something exceptional.",
+  };
+}
+
+function ComingSoon(){
   return <section className="coming-soon">
     <div className="coming-glow coming-glow-blue" aria-hidden="true"/>
     <div className="coming-glow coming-glow-orange" aria-hidden="true"/>
@@ -28,4 +39,12 @@ export default function Page(){
 
     <footer className="coming-footer">© 2026 SMM Tanzania. All Rights Reserved.</footer>
   </section>;
+}
+
+export default function Page(){
+  if(process.env.NODE_ENV==="development"){
+    return <SiteLayout><Homepage/></SiteLayout>;
+  }
+
+  return <ComingSoon/>;
 }
