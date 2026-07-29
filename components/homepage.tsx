@@ -1,5 +1,6 @@
 import Link from "next/link";
 import {OptimizedImage} from "@/components/optimized-image";
+import {ServiceIcon} from "@/components/feature-icon";
 import {db} from "@/lib/prisma";
 
 export async function Homepage() {
@@ -40,7 +41,7 @@ export async function Homepage() {
       <div className="wrap">
         <div className="section-head"><div><span className="kicker">{d.services?.label}</span><h2>{d.services?.heading}</h2></div><p>{d.services?.description}</p></div>
         <div className="service-grid">{services.map((s,i)=><Link className="service" href={`/services/${s.slug}`} key={s.id}>
-          <div className={`service-visual v${i%4}`}><span className="visual-mark">{["⌁","◎","↗","✦"][i%4]}</span></div>
+          <div className={`service-visual v${i%4}`}><span className="visual-mark"><ServiceIcon slug={s.slug}/></span></div>
           <div className="service-copy"><span className="service-no">0{i+1}</span><h3>{s.name}</h3><p>{s.heroDescription}</p><b className="circle-arrow">↗</b></div>
         </Link>)}</div>
         <Link className="text-link" href="/services">View all services <span>↗</span></Link>
